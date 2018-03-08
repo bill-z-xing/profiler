@@ -8,7 +8,7 @@ int main()
 	uint64_t num_iters = 1;
 	for (uint64_t number_of_zeros = 0; number_of_zeros < 12; ++number_of_zeros)
 	{
-		PROFILER p(std::to_string(number_of_zeros) + " 0s");
+		Profiler p(std::to_string(number_of_zeros) + " 0s");
 		for (uint64_t i = 0; i < num_iters; ++i)
 		{
 			result = result ^ (uint64_t)&i;

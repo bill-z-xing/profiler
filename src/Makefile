@@ -1,9 +1,11 @@
 EXEC=a.out
 
 CC=g++
-CPPFLAGS=-c -Wall -Wextra -Werror -O3 -flto -std=c++14
+CPPFLAGS=-c -g -std=c++14 -O2 -flto -Wall -Wextra -Werror \
+-Wno-unused-parameter -Wno-unused-result -Wno-unused-variable -Wno-unused-but-set-variable \
+-Wconversion
 DEPFLAGS=-M
-LDFLAGS=-lboost_system -lpthread
+LDFLAGS=-lboost_system -lpthread -O2 -flto
 
 ROOTDIR=..
 BUILDDIR=$(ROOTDIR)/work

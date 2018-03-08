@@ -7,33 +7,30 @@
 #include <string>
 #include <iomanip>
 
-struct NOW
+namespace ProfilerDetails
 {
-	auto operator()()
+	inline auto now()
 	{
 		auto val = (std::chrono::steady_clock::now().time_since_epoch());
 		return val;
 	}
 };
 
-
-class PROFILER
+class Profiler
 {
 
 public:
 
-	PROFILER(std::string name) :
-		m_start(NOW()()),
+	Profiler(std::string name) :
+		m_start(ProfilerDetails::now()),
 		m_name(std::move(name))
 	{
-		std::ostringstream oss;
-		oss << "PROFILER: \"" << m_name << "\" started!" << std::endl;
-		std::cout << oss.str();
+		std::cout << "Profiler: \"" + m_name + "\" started!\n";
 	}
 
-	~PROFILER()
+	~Profiler()
 	{
-		double val = std::chrono::duration_cast<std::chrono::nanoseconds>(NOW()() - m_start).count();
+		long double val = std::chrono::duration_cast<std::chrono::nanoseconds>(ProfilerDetails::now() - m_start).count();
 
 		enum UNIT : unsigned                  { NS,   US,   MS,   S };
 		const char * unit_names[] =           {"ns", "us", "ms", "s"};
@@ -42,17 +39,17 @@ public:
 		while (val >= 1000.0 && current_unit != S)
 		{
 			val /= 1000.0;
-			current_unit = (UNIT)((uint64_t)current_unit + 1);
+			current_unit = (UNIT)((unsigned)current_unit + 1);
 		}
 
 		std::ostringstream oss;
-		oss << std::setprecision(3) << "PROFILER: \"" << m_name << "\" finished in " << val << unit_names[(uint64_t)current_unit] << std::endl;
-		std::cout << oss.str();
+		oss << std::setprecision(3) << val;
+		std::cout << "Profiler: \"" + m_name + "\" finished in " + oss.str() + unit_names[(unsigned)current_unit] + "\n";
 	}
 
 private:
-	decltype(NOW()()) m_start;
-	const std::string m_name;
+	decltype(ProfilerDetails::now()) m_start;
+	std::string m_name;
 };
 
 #endif
